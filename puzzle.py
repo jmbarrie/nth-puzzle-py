@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 class Puzzle:
     def __init__(self):
         puzzle = None
@@ -46,54 +48,22 @@ class Puzzle:
         """
         return self.puzzle[puzzle_index1][puzzle_index2]
 
-    def shift_value_up(self, puzzle_index1, puzzle_index2):
+    def get_blank_space_index(self):
         """
-        Shifts the contents at tuple index up.
+        Finds and returns the index of the blank space.
+        """
+        blank_space_indices = []
+        for index, list in enumerate(self.puzzle):
+            if 0 in list:
+                blank_space_indices.extend((index, list.index(0)))
+        
+        return blank_space_indices
 
-        Args:
-            puzzle_index1 (int): First index of the puzzle tuple
-            puzzle_index2 (int): Second index of the puzzle tuple
+    def get_puzzle_array_size(self):
         """
-        if(puzzle_index1 - 1 >= 0):
-            temp_value = self.get_index_value(puzzle_index1 - 1, puzzle_index2)
-            self.set_puzzle(puzzle_index1 - 1, puzzle_index2, 0)
-            self.set_puzzle(puzzle_index1, puzzle_index2, temp_value)
+        Returns the size of the puzzle indices, and the length of each list.
+        """
+        list_size = len(self.puzzle.get_puzzle()[0])
+        puzzle_size = len(self.puzzle.get_puzzle())
 
-    def shift_value_down(self, puzzle_index1, puzzle_index2):
-        """
-        Shifts the contents at tuple index down.
-
-        Args:
-            puzzle_index1 (int): First index of the puzzle tuple
-            puzzle_index2 (int): Second index of the puzzle tuple
-        """
-        if(puzzle_index1 + 1 <= len(self.puzzle)):
-            temp_value = self.get_index_value(puzzle_index1 + 1, puzzle_index2)
-            self.set_puzzle(puzzle_index1 + 1, puzzle_index2, 0)
-            self.set_puzzle(puzzle_index1, puzzle_index2, temp_value)
-
-    def shift_value_right(self, puzzle_index1, puzzle_index2):
-        """
-        Shifts the contents at tuple index right.
-
-        Args:
-            puzzle_index1 (int): First index of the puzzle tuple
-            puzzle_index2 (int): Second index of the puzzle tuple
-        """
-        if(puzzle_index2 + 1 <= len(self.puzzle)):
-            temp_value = self.get_index_value(puzzle_index1, puzzle_index2 + 1)
-            self.set_puzzle(puzzle_index1, puzzle_index2 + 1, 0)
-            self.set_puzzle(puzzle_index1, puzzle_index2, temp_value)
-
-    def shift_value_left(self, puzzle_index1, puzzle_index2):
-        """
-        Shifts the contents at tuple index left.
-
-        Args:
-            puzzle_index1 (int): First index of the puzzle tuple
-            puzzle_index2 (int): Second index of the puzzle tuple
-        """
-        if(puzzle_index2 - 1 >= 0):
-            temp_value = self.get_index_value(puzzle_index1, puzzle_index2 - 1)
-            self.set_puzzle(puzzle_index1, puzzle_index2 - 1, 0)
-            self.set_puzzle(puzzle_index1, puzzle_index2, temp_value)
+        return [puzzle_size, list_size]

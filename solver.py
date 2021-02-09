@@ -1,4 +1,5 @@
 from itertools import chain
+from node import Node
 from puzzle import Puzzle
 import heapq
 
@@ -8,10 +9,10 @@ class Solver:
             raise TypeError('puzzle must be an instance of the Puzzle class.')
         self.puzzle = puzzle
         self.algorithm = algorithm
-        self.heuristic = self.get_heuristic()
+        self.heuristic = self.set_heuristic()
         self.goal_state = self.generate_goal_state()
 
-    def get_heuristic(self):
+    def set_heuristic(self):
         """
         Sets the heuristic based on the user's chosen algorithm.
         """
@@ -23,8 +24,35 @@ class Solver:
             self.heuristic = 'misplaced_tiles'
 
     def general_search(self):
+        """
+        Generalized graph search using the priority queue.
+        Returns success or failure of search for goal state.
+        """
         if self.puzzle.get_puzzle() == self.goal_state:
             return 'Solved'
+
+        visited = []
+        queue = []
+        max_queue_size, nodes_explored = 0, 0
+        parent_node = Node(self.puzzle, self.puzzle, 0)
+        heapq.heappush(queue, (0, parent_node))
+
+        while queue:
+            max_queue_size = max(len(queue), max_queue_size)
+
+            lowest_cost = heapq.heappop(queue)
+            current_node = lowest_cost[1]
+            nodes_explored += 1
+
+            if not current_node.get_puzzle() in visited:
+                visited.append(current_node.get_puzzle())
+                if current_node.get_puzzle() == self.goal_state:
+                    print('Found goal state')
+                    print(f'We expanded %s nodes' % nodes_explored)
+                    return 1
+                if nodes_explored == 1:
+                    print('Exploring state')
+                    current_node.print_puzzle()
     
     def generate_goal_state(self):
         """
@@ -49,3 +77,4 @@ class Solver:
             goal_state.append(idx)
 
         self.goal_state = goal_state
+
