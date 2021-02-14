@@ -34,9 +34,6 @@ class Solver:
         """
         self.generate_goal_state()
 
-        if self.puzzle.get_puzzle() == self.goal_state:
-            return 'Solved'
-
         # Stores puzzles that have already been expanded
         visited = []
         queue = []
@@ -54,17 +51,17 @@ class Solver:
                 visited.append(current_node.get_puzzle())
                 if current_node.get_puzzle() == self.goal_state:
                     current_node.print_puzzle()
-                    print('Goal!!!')
-                    print(f'To solve this problem the search algorithm expanded a total of %s nodes.' % nodes_explored)
+                    print('\nGoal!!!')
+                    print(f'\nTo solve this problem the search algorithm expanded a total of %s nodes.' % nodes_explored)
                     print(f'The maximum number of nodes in the queue at any one time was %s.' % len(queue))
                     print(f'The depth of the goal node was %s.' % current_node.get_g_cost())
                     return 1
 
                 if nodes_explored == 1:
-                    print('Expanding state')
+                    print('\nExpanding state')
                     current_node.print_puzzle()
                 else:
-                    print(f'The best state to expand with a g(n) = %s and h(n) = %s' % (current_node.get_g_cost(), current_node.get_h_cost()))
+                    print(f'\nThe best state to expand with a g(n) = %s and h(n) = %s' % (current_node.get_g_cost(), current_node.get_h_cost()))
                     current_node.print_puzzle()
                     print('Expanding this node...')
 

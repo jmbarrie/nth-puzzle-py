@@ -6,7 +6,7 @@ from puzzle import Puzzle
 def default_node():
     default_puzzle = Puzzle()
     default_puzzle.create_default_puzzle()
-    return Node(default_puzzle, default_puzzle, 0)
+    return Node(default_puzzle, default_puzzle, 0, 'uniform')
 
 def test_move_up(default_node):
     expected = [[1, 0, 3],

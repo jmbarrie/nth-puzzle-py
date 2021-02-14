@@ -33,15 +33,33 @@ class Puzzle:
         """
         Selection 1: Generates a default puzzle for the user.
         """
-        #self.puzzle = [[1, 2, 3],
-                       #[4, 0, 6],
-                       #[7, 5, 8]
-                       #]
-
-        self.puzzle = [[2, 8, 1],
-                       [0, 4, 3],
-                       [7, 6, 5]
+        self.puzzle = [[1, 2, 3],
+                       [4, 0, 6],
+                       [7, 5, 8]
                        ]
+
+    def create_custom_puzzle(self):
+        """
+        Selection 2: Allows user to define a custom puzzle.
+        """
+        custom_puzzle = []
+        print('Enter your puzzle, use a zero to represent the blank, and exit to'
+              + 'complete your custom puzzle')
+        while True:
+            user_selection = \
+                input('Enter the row, use space or tabs between numbers\t')
+
+            if user_selection == 'exit':
+                break
+            else:
+                row_list = user_selection.split(" ")
+                row_list = [int(i) for i in row_list]
+                custom_puzzle.append(row_list)
+                continue
+
+        self.puzzle = custom_puzzle
+        print(self.puzzle)
+
     def get_index_value(self, puzzle_index1, puzzle_index2):
         """
         Returns the contents at tuple index.
