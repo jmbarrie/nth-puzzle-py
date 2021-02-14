@@ -1,6 +1,5 @@
 from puzzle import Puzzle
 from solver import Solver
-from itertools import chain
 
 def solve(algorithm_selection, puzzle):
     solver = Solver(algorithm_selection, puzzle)

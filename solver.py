@@ -50,6 +50,7 @@ class Solver:
             if not current_node.get_puzzle() in visited:
                 visited.append(current_node.get_puzzle())
                 if current_node.get_puzzle() == self.goal_state:
+                    print(f'\nThe best state to expand with a g(n) = %s and h(n) = %s' % (current_node.get_g_cost(), current_node.get_h_cost()))
                     current_node.print_puzzle()
                     print('\nGoal!!!')
                     print(f'\nTo solve this problem the search algorithm expanded a total of %s nodes.' % nodes_explored)

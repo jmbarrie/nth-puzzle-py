@@ -1,8 +1,10 @@
 from copy import deepcopy
-from puzzle import Puzzle
 
 class Node:
     def __lt__(self, other):
+        """
+        Used for heapq comparison.
+        """
         return self.f_cost < other.f_cost
 
     def __init__(self, initial_puzzle, parent_puzzle, g_cost, heuristic):
@@ -15,9 +17,15 @@ class Node:
         self.set_f_cost()
 
     def set_f_cost(self):
+        """
+        Sets the total f cost.
+        """
         self.f_cost = self.get_g_cost() + self.get_h_cost()
 
     def set_h_cost(self, heuristic):
+        """
+        Sets the heuristic cost based on which algorithm was chosen.
+        """
         if heuristic == 'uniform':
             self.h_cost = 0
         elif heuristic == 'misplaced_tiles':

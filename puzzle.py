@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 class Puzzle:
     def __init__(self):
         puzzle = None
@@ -27,7 +25,7 @@ class Puzzle:
         Outputs the current puzzle.
         """
         for row in self.puzzle:
-            print(*row, sep=', ')
+            print(*row, sep=' ')
 
     def create_default_puzzle(self):
         """
@@ -58,7 +56,9 @@ class Puzzle:
                 continue
 
         self.puzzle = custom_puzzle
-        print(self.puzzle)
+        print()
+        self.print_puzzle()
+        print()
 
     def get_index_value(self, puzzle_index1, puzzle_index2):
         """
