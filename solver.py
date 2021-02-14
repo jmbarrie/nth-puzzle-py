@@ -9,8 +9,9 @@ class Solver:
             raise TypeError('puzzle must be an instance of the Puzzle class.')
         self.puzzle = puzzle
         self.algorithm = algorithm
-        self.heuristic = self.set_heuristic()
+        self.heuristic = None
         self.goal_state = None
+        self.set_heuristic()
 
     def set_heuristic(self):
         """
@@ -18,7 +19,7 @@ class Solver:
         """
         # If Uniform Cost Search or A* with Manhattan Distance heuristic
         if self.algorithm == '1' or self.algorithm == '3':
-            self.heuristic = 'eucledian'
+            self.heuristic = 'uniform'
         # Else if A* with Misplaced Tile Heuristic
         elif self.algorithm == '2':
             self.heuristic = 'misplaced_tiles'
@@ -33,10 +34,11 @@ class Solver:
         if self.puzzle.get_puzzle() == self.goal_state:
             return 'Solved'
 
+        # Stores puzzles that have already been expanded
         visited = []
         queue = []
         max_queue_size, nodes_explored = 0, 0
-        parent_node = Node(self.puzzle, self.puzzle, 0)
+        parent_node = Node(self.puzzle, self.puzzle, 0, self.heuristic)
         heappush(queue, (0, parent_node))
 
         while queue:
@@ -51,20 +53,21 @@ class Solver:
                     current_node.print_puzzle()
                     print('Goal!!!')
                     print(f'To solve this problem the search algorithm expanded a total of %s nodes.' % nodes_explored)
-                    print(f'The maximum number of nodes in the queue at any one time was %s.' % max_queue_size)
+                    print(f'The maximum number of nodes in the queue at any one time was %s.' % len(queue))
+                    print(f'The depth of the goal node was %s.' % current_node.get_g_cost())
                     return 1
 
                 if nodes_explored == 1:
                     print('Expanding state')
                     current_node.print_puzzle()
                 else:
-                    print(f'The best state to expand with a g(n) = %s and h(n) = ' % (current_node.f_cost))
+                    print(f'The best state to expand with a g(n) = %s and h(n) = %s' % (current_node.get_g_cost(), current_node.get_h_cost()))
                     current_node.print_puzzle()
                     print('Expanding this node...')
 
                 moves = current_node.generate_legal_moves()
                 for puzzle in moves:
-                    next_node = Node(puzzle, current_node, nodes_explored)
+                    next_node = Node(puzzle, current_node, current_node.get_g_cost(), self.heuristic)
                     heappush(queue, (current_node.f_cost, next_node))
         return 0
     

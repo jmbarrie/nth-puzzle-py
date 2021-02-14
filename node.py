@@ -5,11 +5,49 @@ class Node:
     def __lt__(self, other):
         return self.f_cost < other.f_cost
 
-    def __init__(self, initial_puzzle, parent_puzzle, f_cost):
-        self.h = 0
+    def __init__(self, initial_puzzle, parent_puzzle, g_cost, heuristic):
         self.initial_puzzle = initial_puzzle
         self.parent_puzzle = parent_puzzle
-        self.f_cost = f_cost + 1
+        self.g_cost = g_cost + 1
+        self.h_cost = None
+        self.f_cost = None 
+        self.set_h_cost(heuristic)
+        self.set_f_cost()
+
+    def set_f_cost(self):
+        self.f_cost = self.get_g_cost() + self.get_h_cost()
+
+    def set_h_cost(self, heuristic):
+        if heuristic == 'uniform':
+            self.h_cost = 0
+        else:
+            self.h_cost = self.set_misplaced_tiles()
+
+    def set_misplaced_tiles(self):
+        expected = 1
+        misplaced_tiles = 0
+        # Returns the sizes of lists in our puzzle [0] puzzle size, [1] list size
+        puzzle_array_sizes = self.initial_puzzle.get_puzzle_array_size()
+        # Go through each item in our puzzle and count how many spaces away we are
+        for i in range(puzzle_array_sizes[0]):
+            for j in range(puzzle_array_sizes[1]):
+                # If the last item is not 0, increment misplaced_tiles
+                if i == puzzle_array_sizes[0] - 1 and j == puzzle_array_sizes[1] - 1:
+                    if self.initial_puzzle.get_index_value(i, j) != 0:
+                        misplaced_tiles += 1
+                # Check each item, if they are not equal to their expected value, increment misplaced tiles
+                elif self.initial_puzzle.get_index_value(i, j) != expected:
+                    misplaced_tiles += 1 
+
+                expected += 1
+
+        return misplaced_tiles
+
+    def get_g_cost(self):
+        return self.g_cost
+
+    def get_h_cost(self):
+        return self.h_cost
 
     def get_parent(self):
         """
