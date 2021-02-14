@@ -33,11 +33,15 @@ class Puzzle:
         """
         Selection 1: Generates a default puzzle for the user.
         """
-        self.puzzle = [[1, 2, 3],
-                       [4, 0, 6],
-                       [7, 5, 8]
-                       ]
+        #self.puzzle = [[1, 2, 3],
+                       #[4, 0, 6],
+                       #[7, 5, 8]
+                       #]
 
+        self.puzzle = [[2, 8, 1],
+                       [0, 4, 3],
+                       [7, 6, 5]
+                       ]
     def get_index_value(self, puzzle_index1, puzzle_index2):
         """
         Returns the contents at tuple index.

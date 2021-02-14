@@ -18,11 +18,14 @@ class Solver:
         Sets the heuristic based on the user's chosen algorithm.
         """
         # If Uniform Cost Search or A* with Manhattan Distance heuristic
-        if self.algorithm == '1' or self.algorithm == '3':
+        if self.algorithm == '1':
             self.heuristic = 'uniform'
         # Else if A* with Misplaced Tile Heuristic
         elif self.algorithm == '2':
             self.heuristic = 'misplaced_tiles'
+        # Else A* with Manhattan 
+        elif self.algorithm == '3':
+            self.heuristic = 'manhattan'
 
     def general_search(self):
         """
@@ -38,7 +41,7 @@ class Solver:
         visited = []
         queue = []
         max_queue_size, nodes_explored = 0, 0
-        parent_node = Node(self.puzzle, self.puzzle, 0, self.heuristic)
+        parent_node = Node(self.puzzle, self.puzzle, -1, self.heuristic)
         heappush(queue, (0, parent_node))
 
         while queue:

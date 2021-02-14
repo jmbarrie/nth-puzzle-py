@@ -20,8 +20,10 @@ class Node:
     def set_h_cost(self, heuristic):
         if heuristic == 'uniform':
             self.h_cost = 0
-        else:
+        elif heuristic == 'misplaced_tiles':
             self.h_cost = self.set_misplaced_tiles()
+        elif heuristic == 'manhattan':
+            self.h_cost = self.set_manhattan_distance()
 
     def set_misplaced_tiles(self):
         expected = 1
@@ -42,6 +44,27 @@ class Node:
                 expected += 1
 
         return misplaced_tiles
+
+    def set_manhattan_distance(self):
+        distance = 0
+        puzzle_array_sizes = self.initial_puzzle.get_puzzle_array_size()
+        for i in range(puzzle_array_sizes[0]):
+            for j in range(puzzle_array_sizes[1]):
+                row, column = 0, 0
+                temp = self.initial_puzzle.get_index_value(i, j)
+
+                if temp != 0:
+                    while temp > puzzle_array_sizes[0]:
+                        temp -= puzzle_array_sizes[0]
+                        row += 1
+                    column = temp - 1
+                else:
+                    row = puzzle_array_sizes[0] - 1
+                    column = puzzle_array_sizes[0] - 1
+
+                distance += abs(row - i) + abs(column - j)
+
+        return distance
 
     def get_g_cost(self):
         return self.g_cost
