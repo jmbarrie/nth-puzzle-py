@@ -47,3 +47,30 @@ def test_move_right(default_node):
     new_node = default_node.shift_value_right()
     new_node.print_puzzle()
     assert expected == new_node.get_puzzle() 
+
+def test_legal_moves(default_node):
+    moves = default_node.generate_legal_moves()
+    expected_0 = [[1, 0, 3],
+                [4, 2, 6],
+                [7, 5, 8]
+                ]
+
+    expected_1 = [[1, 2, 3],
+                [4, 5, 6],
+                [7, 0, 8]
+                ]
+
+    expected_2 = [[1, 2, 3],
+                [4, 6, 0],
+                [7, 5, 8]
+                ]
+
+    expected_3 = [[1, 2, 3],
+                [0, 4, 6],
+                [7, 5, 8]
+                ]
+
+    assert moves[0].get_puzzle() == expected_0
+    assert moves[1].get_puzzle() == expected_1
+    assert moves[2].get_puzzle() == expected_2
+    assert moves[3].get_puzzle() == expected_3

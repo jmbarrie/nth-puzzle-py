@@ -63,7 +63,7 @@ class Puzzle:
         """
         Returns the size of the puzzle indices, and the length of each list.
         """
-        list_size = len(self.puzzle.get_puzzle()[0])
-        puzzle_size = len(self.puzzle.get_puzzle())
+        list_size = len(self.get_puzzle()[0])
+        puzzle_size = len(self.get_puzzle())
 
         return [puzzle_size, list_size]

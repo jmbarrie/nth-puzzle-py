@@ -1,7 +1,7 @@
 from itertools import chain
 from node import Node
 from puzzle import Puzzle
-import heapq
+from heapq import heappush, heappop
 
 class Solver:
     def __init__(self, algorithm, puzzle):
@@ -10,7 +10,7 @@ class Solver:
         self.puzzle = puzzle
         self.algorithm = algorithm
         self.heuristic = self.set_heuristic()
-        self.goal_state = self.generate_goal_state()
+        self.goal_state = None
 
     def set_heuristic(self):
         """
@@ -28,6 +28,8 @@ class Solver:
         Generalized graph search using the priority queue.
         Returns success or failure of search for goal state.
         """
+        self.generate_goal_state()
+
         if self.puzzle.get_puzzle() == self.goal_state:
             return 'Solved'
 
@@ -35,24 +37,36 @@ class Solver:
         queue = []
         max_queue_size, nodes_explored = 0, 0
         parent_node = Node(self.puzzle, self.puzzle, 0)
-        heapq.heappush(queue, (0, parent_node))
+        heappush(queue, (0, parent_node))
 
         while queue:
             max_queue_size = max(len(queue), max_queue_size)
-
-            lowest_cost = heapq.heappop(queue)
+            lowest_cost = heappop(queue)
             current_node = lowest_cost[1]
             nodes_explored += 1
 
             if not current_node.get_puzzle() in visited:
                 visited.append(current_node.get_puzzle())
                 if current_node.get_puzzle() == self.goal_state:
-                    print('Found goal state')
-                    print(f'We expanded %s nodes' % nodes_explored)
-                    return 1
-                if nodes_explored == 1:
-                    print('Exploring state')
                     current_node.print_puzzle()
+                    print('Goal!!!')
+                    print(f'To solve this problem the search algorithm expanded a total of %s nodes.' % nodes_explored)
+                    print(f'The maximum number of nodes in the queue at any one time was %s.' % max_queue_size)
+                    return 1
+
+                if nodes_explored == 1:
+                    print('Expanding state')
+                    current_node.print_puzzle()
+                else:
+                    print(f'The best state to expand with a g(n) = %s and h(n) = ' % (current_node.f_cost))
+                    current_node.print_puzzle()
+                    print('Expanding this node...')
+
+                moves = current_node.generate_legal_moves()
+                for puzzle in moves:
+                    next_node = Node(puzzle, current_node, nodes_explored)
+                    heappush(queue, (current_node.f_cost, next_node))
+        return 0
     
     def generate_goal_state(self):
         """
@@ -78,3 +92,5 @@ class Solver:
 
         self.goal_state = goal_state
 
+    def get_goal_state(self):
+        return self.goal_state

@@ -2,11 +2,14 @@ from copy import deepcopy
 from puzzle import Puzzle
 
 class Node:
-    def __init__(self, initial_puzzle, parent_puzzle, depth):
+    def __lt__(self, other):
+        return self.f_cost < other.f_cost
+
+    def __init__(self, initial_puzzle, parent_puzzle, f_cost):
         self.h = 0
         self.initial_puzzle = initial_puzzle
         self.parent_puzzle = parent_puzzle
-        self.depth = depth
+        self.f_cost = f_cost + 1
 
     def get_parent(self):
         """
@@ -69,7 +72,15 @@ class Node:
             left, right = True, True
 
         if up:
-            moves.append(self.shift_value_up)
+            moves.append(self.shift_value_up())
+        if down:
+            moves.append(self.shift_value_down())
+        if right:
+            moves.append(self.shift_value_right())
+        if left:
+            moves.append(self.shift_value_left())
+
+        return moves
 
     def shift_value_up(self):
         """
